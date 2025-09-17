@@ -128,9 +128,14 @@ void BlurImage(const BMPImage& source, BMPImage& dest, int threadsCount, int cor
 	}
 
 	dest = source;
-
 	std::vector<ThreadData> threadData(threadsCount);
 	std::vector<HANDLE> handles(threadsCount);
+
+	DWORD_PTR affinityMask = 0;
+	for (int i = 0; i < coresCount; i++)
+	{
+		affinityMask |= (1ULL << i);
+	}
 
 	for (int i = 0; i < threadsCount; i++)
 	{
@@ -140,6 +145,7 @@ void BlurImage(const BMPImage& source, BMPImage& dest, int threadsCount, int cor
 		threadData[i].blurRadius = 1;
 
 		handles[i] = CreateThread(NULL, 0, &BlurThread, &threadData[i], CREATE_SUSPENDED, NULL);
+		SetThreadAffinityMask(handles[i], affinityMask);
 	}
 
 	for (auto handle : handles) 
