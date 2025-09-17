@@ -85,8 +85,8 @@ DWORD WINAPI BlurThread(CONST LPVOID lpParam)
 						int nx = x + dx;
 						int ny = y + dy;
 
-						if (nx >= 0 && nx < source.infoHeader.biWidth &&
-							ny >= 0 && ny < source.infoHeader.biHeight)
+						if (nx >= 0 && nx < (int)source.infoHeader.biWidth &&
+							ny >= 0 && ny < (int)source.infoHeader.biHeight)
 						{
 							const ColorRGBA& pixel = source.pixels[ny][nx];
 
@@ -153,7 +153,7 @@ void BlurImage(const BMPImage& source, BMPImage& dest, int threadsCount, int cor
 		ResumeThread(handle);
 	}
 
-	WaitForMultipleObjects(handles.size(), handles.data(), TRUE, INFINITE);
+	WaitForMultipleObjects((DWORD)handles.size(), handles.data(), TRUE, INFINITE);
 
 	for (auto handle : handles) 
 	{

@@ -60,6 +60,7 @@ int main(int argc, char* argv[])
     std::chrono::duration<double> elapsed = end - start;
 
     std::cout << "Blur applied " << blurCount << " times." << std::endl;
+    std::cout << "Threads: " << args->threadsAmount << "; Cores: " << args->coresAmount << std::endl;
     std::cout << "Total time: " << elapsed.count() << " seconds." << std::endl;
 
     return EXIT_SUCCESS;
